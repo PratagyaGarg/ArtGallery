@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face{
+    font-family: 'Florilan';
+    src: url('../public/florilan.ttf') ;
+    
+}
+@font-face{
+    font-family: 'Queen Rogette';
+    src: url('../public/Queen Rogette.woff') format('woff');
+    
+}
+@font-face{
+    font-family: 'CaviarDreams';
+    src: url('../public/CaviarDreams.ttf');
+    
+}
