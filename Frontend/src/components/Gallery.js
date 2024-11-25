@@ -7,7 +7,7 @@ function Gallery() {
   const [arts, setArts] = useState([
     {
       id: 1,
-      image: "image1.jpg",
+      image: "https://images.unsplash.com/photo-1579762714453-51d9913984e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
       artist: "Artist A",
       name: "Art 1",
       likes: 120,
@@ -15,7 +15,31 @@ function Gallery() {
     },
     {
       id: 2,
-      image: "image2.jpg",
+      image: "https://images.unsplash.com/photo-1579762714453-51d9913984e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
+      artist: "Artist B",
+      name: "Art 2",
+      likes: 85,
+      liked: false, // Initial liked state
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1577084381359-5e873214ff2a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
+      artist: "Artist B",
+      name: "Art 2",
+      likes: 85,
+      liked: false, // Initial liked state
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1577083165350-16c9f88b4a25?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
+      artist: "Artist B",
+      name: "Art 2",
+      likes: 85,
+      liked: false, // Initial liked state
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1460398495418-62c9b5d79fbf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       artist: "Artist B",
       name: "Art 2",
       likes: 85,
@@ -84,22 +108,22 @@ function Gallery() {
 
         {/* Main Content */}
         <main
-          className={`flex-1 transition-all duration-300 ${
+          className={`flex-1 transition-all duration-300  ${
             isAsideOpen ? "ml-64" : "ml-16"
           }`}
         >
           <div className="h-20"></div>
           {/* Grid for Images */}
-          <div className="grid grid-cols-3 gap-10 p-8 pt-20">
+          <div className="grid grid-cols-3 gap-16 p-8 pt-20">
             {arts.map((art) => (
               <div
                 key={art.id}
-                className="relative rounded-sm overflow-hidden shadow-md"
+                className="relative  rounded-sm overflow-hidden shadow-md"
               >
                 <img
                   src={art.image}
                   alt={art.name}
-                  className="w-full h-80 object-cover"
+                  className="w-full h-96 object-cover"
                 />
                 <div className="p-4">
                   <h3 className="font-bold">{art.name}</h3>

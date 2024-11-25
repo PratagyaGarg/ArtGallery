@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
-function connectDatabase(){
-    mongoose.connect('mongodb://0.0.0.0/drive').then(()=>{
-        console.log('connect to database');
+
+function connectDatabase() {
+  mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+      console.log('Connected to database');
     })
+    .catch((error) => {
+      console.error('Error connecting to MongoDB:', error.message);
+    });
 }
+
 module.exports = connectDatabase;

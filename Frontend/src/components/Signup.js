@@ -10,13 +10,14 @@ function SignUp() {
     const signUpData = { username, password };
 
     try {
-      const response = await fetch("http://localhost:2707/user/signup", {
+      const response = await fetch("http://localhost:5000/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(signUpData),
       });
+      console.log(response);
 
 
       if (!response.ok) {

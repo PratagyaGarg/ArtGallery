@@ -11,7 +11,6 @@ Router.post('/signup',
     async (req, res) => {
         let errors = validationResult(req);
         if (!errors.isEmpty()) {
-            
             return res.status(400).json({
                 errors: errors,
                 message: "Username and Password are incorrect."
@@ -29,7 +28,6 @@ Router.post('/signup',
                 username,
                 password: hashedPassword
             });
-            console.log(username+ " "+password);
 
 
             // Send success response with the new user's details (excluding password)
@@ -41,7 +39,7 @@ Router.post('/signup',
                 }
             });
         } catch (err) {
-            res.status(500).json({
+            return res.status(500).json({
                 message: "An error occurred while creating the user.",
                 error: err.message
             });
