@@ -1,30 +1,34 @@
 import React from "react";
 
-function TopArtist() {
-  const artist = {
-    name: "Emily White",
-    about: "Emily is a renowned contemporary artist known for her nature-inspired works. Her abstract pieces explore the connection between human emotions and the natural world.",
-    image: "https://images.unsplash.com/photo-1631585506172-213fc1e99403?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Replace with the actual image URL
-  };
-
+const TopArtistSection = ({ artist }) => {
   return (
-    <section className="relative w-full h-[500px] bg-gray-300">
-      <img
-        src={artist.image}
-        alt={artist.name}
-        className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
-      />
-      <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60">
-        {/* Black overlay with opacity */}
-      </div>
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-        <div className="text-center text-white px-6 py-8">
-          <h2 className="text-4xl font-bold">{artist.name}</h2>
-          <p className="text-lg mt-4">{artist.about}</p>
+    <div className="relative bg-[#101010] text-white px-4 py-8">
+      {/* Container */}
+      <div className="relative flex flex-col md:flex-row items-center max-w-full">
+        {/* Left Side: Text Content */}
+        <div className="md:w-1/2 z-10 bg-opacity-70 p-6 translate-x-20 rounded-md">
+          <h2 className="text-4xl border-2 border-solid border-[#ff4500] bg-black text-white rounded-md uppercase font-caviarDreams p-8 font-bold mb-4">
+            my name is jhon doe
+          </h2>
+          <p className="text-xl text-[#ff4500] px-14 font-caviarDreams">
+            "Meet Jhon Doe, a visionary creator whose passion for art knows no bounds. With a unique ability to transform emotions into stunning masterpieces.
+          </p>
+        </div>
+
+        {/* Right Side: Image with Overlay */}
+        <div className="md:w-[75%] h-full relative">
+          {/* Image */}
+          <img
+            src="https://images.unsplash.com/photo-1597274303632-880ef8660375?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Artist"
+            className="w-full h-[80vh] object-cover rounded-md shadow-lg"
+          />
+          {/* Black Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-60 rounded-md"></div>
         </div>
       </div>
-    </section>
+    </div>
   );
-}
+};
 
-export default TopArtist;
+export default TopArtistSection;

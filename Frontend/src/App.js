@@ -19,6 +19,7 @@ function App() {
             <Route path="/myart" Component ={Myart}/>
             <Route path="/upload" Component ={Upload}/>
             <Route path="/gallery" Component ={Gallery}/>
+            
 
         </Routes>
     </Router>
