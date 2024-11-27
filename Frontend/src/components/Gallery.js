@@ -4,50 +4,52 @@ function Gallery() {
   const [isAsideOpen, setIsAsideOpen] = useState(false); // Default to closed
   const toggleAside = () => setIsAsideOpen(!isAsideOpen);
 
-  const [arts, setArts] = useState([
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1579762714453-51d9913984e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
-      artist: "Artist A",
-      name: "Art 1",
-      likes: 120,
-      liked: false, // Initial liked state
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1579762714453-51d9913984e2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
-      artist: "Artist B",
-      name: "Art 2",
-      likes: 85,
-      liked: false, // Initial liked state
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1577084381359-5e873214ff2a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
-      artist: "Artist B",
-      name: "Art 2",
-      likes: 85,
-      liked: false, // Initial liked state
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1577083165350-16c9f88b4a25?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGFydHxlbnwwfHwwfHx8MA%3D%3D",
-      artist: "Artist B",
-      name: "Art 2",
-      likes: 85,
-      liked: false, // Initial liked state
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1460398495418-62c9b5d79fbf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      artist: "Artist B",
-      name: "Art 2",
-      likes: 85,
-      liked: false, // Initial liked state
-    },
-    // Add more arts here...
-  ]);
+  const [arts, setArts] = useState([]); // Initialize as empty
+  const [searchQuery, setSearchQuery] = useState(""); // For search functionality
 
+  const API_KEY = "wQxLG40vEXdMJqnZHxkrctiWqwBo6htiz34Wg6Mw_Fs";
+
+  // Fetch images from Unsplash
+  const fetchArts = async (query = "", orderBy = "latest") => {
+    try {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${query || "art"}&per_page=9&order_by=${orderBy}`,
+        {
+          headers: {
+            Authorization: `Client-ID ${API_KEY}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch arts");
+      }
+
+      const data = await response.json();
+
+      // Map response to arts format
+      const images = data.results.map((item) => ({
+        id: item.id,
+        image: item.urls.regular,
+        artist: item.user.name,
+        name: item.alt_description || "Untitled",
+        likes: item.likes,
+        liked: false,
+      }));
+
+      setArts(images);
+    } catch (error) {
+      console.error("Error fetching arts:", error);
+    }
+  };
+
+  // Handle search input
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchArts(searchQuery);
+  };
+
+  // Toggle like functionality
   const toggleLike = (id) => {
     setArts((prevArts) =>
       prevArts.map((art) =>
@@ -58,10 +60,14 @@ function Gallery() {
     );
   };
 
+  // Fetch default arts on component mount
+  React.useEffect(() => {
+    fetchArts();
+  }, []);
+
   return (
     <div className="relative w-full h-screen">
       {/* Navbar Spacer */}
-
       {/* Content */}
       <div className="flex">
         {/* Aside Section */}
@@ -86,19 +92,32 @@ function Gallery() {
               <h2 className="text-2xl mb-4 font-caviarDreams text-white font-bold">
                 Filters
               </h2>
-              <input
-                type="text"
-                placeholder="Search arts..."
-                className="w-full px-3 py-2 mb-4 border rounded-full"
-              />
-              <div className="space-y-2 text-white">
-                <button className="w-full text-left text-lg p-2">
-                  Art Style
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  placeholder="Search arts..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-3 py-2 mb-4 border rounded-full"
+                />
+                <button
+                  type="submit"
+                  className="w-full bg-white text-[#ff4500] py-2 rounded-full"
+                >
+                  Search
                 </button>
-                <button className="w-full text-left text-lg p-2">
+              </form>
+              <div className="space-y-2 text-white">
+                <button
+                  onClick={() => fetchArts("", "latest")}
+                  className="w-full  text-left text-lg p-2"
+                >
                   Recently Uploaded
                 </button>
-                <button className="w-full text-left text-lg p-2">
+                <button
+                  onClick={() => fetchArts("", "popular")}
+                  className="w-full text-left text-lg p-2"
+                >
                   Most Liked
                 </button>
               </div>
@@ -108,7 +127,7 @@ function Gallery() {
 
         {/* Main Content */}
         <main
-          className={`flex-1 transition-all duration-300  ${
+          className={`flex-1 transition-all duration-300 ${
             isAsideOpen ? "ml-64" : "ml-16"
           }`}
         >
@@ -118,7 +137,7 @@ function Gallery() {
             {arts.map((art) => (
               <div
                 key={art.id}
-                className="relative  rounded-sm overflow-hidden shadow-md"
+                className="relative rounded-sm overflow-hidden shadow-md"
               >
                 <img
                   src={art.image}
@@ -150,4 +169,4 @@ function Gallery() {
   );
 }
 
-export default Gallery;
+export default Gallery
