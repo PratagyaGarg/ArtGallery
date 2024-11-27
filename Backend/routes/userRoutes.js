@@ -19,6 +19,7 @@ Router.post('/signup',
     }
 
     const { username, password } = req.body;
+    console.log(username + " password: "+ password);
     
     try {
       // Hash the password
@@ -48,41 +49,63 @@ Router.post('/signup',
 );
 
 // Sign In Route
-Router.post('/signin',
-  body('username').trim().isLength({ min: 6 }),
-  body('password').trim().isLength({ min: 6 }),
+Router.post(
+  "/signin",
+  body("username").trim().isLength({ min: 6 }),
+  body("password").trim().isLength({ min: 6 }),
   async (req, res) => {
     const { username, password } = req.body;
+
+    // Validate Input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+        message: "Invalid input provided.",
+      });
+    }
     console.log(username + " "+ password);
-    
+
     try {
-      // Check if user exists
+      // Find user by username
       const user = await userModel.findOne({ username });
-      
       if (!user) {
-        return res.status(400).send('Username and password are incorrect');
+        return res.status(400).json({ message: "Invalid username or password." });
       }
 
-      // Compare password
+      // Check password
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).send("Username or password is incorrect");
+      if (!isMatch) {
+        return res.status(400).json({ message: "Invalid username or password." });
+      }
 
       // Generate JWT token
-      const token = jwt.sign({
-        userId: user._id,
-        username
-      }, "driveSecret");
+      const token = jwt.sign(
+        { userId: user._id, username: user.username },
+        process.env.JWT_SECRET || "defaultSecret",
+        { expiresIn: "1h" }
+      );
 
-      // Set the token in cookies
-      res.cookie('token', token);
-      res.send('Logged in');
+      // Send token and user info
+      res.status(200).json({
+        message: "Logged in successfully",
+        token,
+        user: {
+          id: user._id,
+          username: user.username,
+        },
+      });
     } catch (err) {
       return res.status(500).json({
         message: "An error occurred during login.",
-        error: err.message
+        error: err.message,
       });
     }
   }
 );
 
 module.exports = Router;
+
+
+
+

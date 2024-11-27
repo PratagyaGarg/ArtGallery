@@ -17,7 +17,6 @@ function SignUp() {
         },
         body: JSON.stringify(signUpData),
       });
-      console.log(response);
 
 
       if (!response.ok) {

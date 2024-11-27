@@ -22,11 +22,13 @@ function SignIn() {
       });
 
       // Parse the response
-      const data = await response.text(); // Backend sends text like "Logged in" or error message
+      const data = await response.json(); // Backend sends text like "Logged in" or error message
 
       if (response.ok) {
         // If login is successful, navigate to the dashboard
-        console.log(data); // Log success message
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("userId", data.user.id);
+        console.log("signed in successfull"); // Log success message
         navigate(""); // Replace with actual route after sign-in
       } else {
         // Handle errors (e.g., invalid username/password)

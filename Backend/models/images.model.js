@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const imageSchema = new mongoose.Schema({
+const artSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  tags: { type: [String], required: true },
+  description: String,
+  tags: [String],
   imageUrl: { type: String, required: true },
-  uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  uploadDate: { type: Date, default: Date.now },
-  liked: { type: Boolean, default: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Image', imageSchema);
+module.exports = mongoose.model("Art", artSchema);
